@@ -1,0 +1,47 @@
+<p>Lista de postres</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Imagen</th>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Stock</th>
+      <th>Porciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let postre of postres">
+      <td>
+        <img
+          width="100"
+          class="img-thumbnail"
+          src="{{ postre.imagen }}"
+          alt="{{ postre.nombre }}"
+        />
+      </td>
+      <td>{{ postre.nombre }}</td>
+      <td>{{ postre.precio | currency }}</td>
+      <td
+        class="bg-warning badge badge-warning"
+        *ngIf="postre.stock == 0; else hayStock"
+      >
+        SIN STOCK
+      </td>
+      <ng-template #hayStock>
+        <td class="bg-success badge badge-warning text-light">HAY STOCK</td>
+        <td>
+          <input-integer
+            [(cantidad)]="postre.porciones"
+            [max]="postre.stock"
+            (maxAlcanzado)="maxAlcanzado($event)"
+          ></input-integer>
+          <div>
+            <button class="btn btn-light" (click)="agregarAlCarrito(postre)">
+              Comprar
+            </button>
+          </div>
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
